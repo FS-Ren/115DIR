@@ -342,12 +342,19 @@ def face_detect():
 
     if faces is not None:
         face_count = int(len(faces))
-        for face in faces:
+        # 使用 enumerate 取得 index (idx)，用於標示 #n
+        for idx, face in enumerate(faces):
             x, y, w, h = int(face[0]), int(face[1]), int(face[2]), int(face[3])
             score = float(face[14])
-            confidences.append(round(score * 100.0, 2))
-            # 以純綠色 (0, 255, 0) 繪製 1 px 矩形邊界框 (FR-5.2)
-            cv2.rectangle(orig_bgr, (x, y), (x + w, y + h), (0, 255, 0), 1)
+            conf_percent = round(score * 100.0, 2)
+            confidences.append(conf_percent)
+            
+            cv2.rectangle(orig_bgr, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            
+            # Y 座標加入 max(y - 8, 15) 防止文字超出圖片頂部邊界
+            text = f"#{idx + 1}: {conf_percent}%"
+            cv2.putText(orig_bgr, text, (x, max(y - 8, 15)), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
     return jsonify({
         "status": "success",

@@ -574,7 +574,6 @@
         <h1>影像處理與分析系統</h1>
         <p>Web 互動式數位影像分析、色彩空間分解、自訂卷積核濾波與 YuNet 人臉偵測平台</p>
       </div>
-        <input type="text" id="apiBaseUrl" value="https://one151dir.onrender.com" />
     </div>
   </header>
 
@@ -880,7 +879,6 @@
           <p style="font-size: 0.92rem; color: var(--text-muted);">
             採用 OpenCV 內建輕量級卷積神經網路 YuNet 於原始影像推論，並以 1 px 純綠色邊界框標註。
           </p>
-          <button class="btn btn-primary" type="button" onclick="runFaceDetection()">執行人臉偵測</button>
         </div>
 
         <div class="alert alert-error" id="faceErrorBox"></div>
@@ -1017,10 +1015,13 @@
       }
     };
 
+	const API_BASE_URL = 'https://one151dir.onrender.com';
+	
     function getApiUrl(endpoint) {
-      const base = document.getElementById('apiBaseUrl').value.trim().replace(/\/+$/, '');
-      return `${base}${endpoint}`;
-    }
+	// 自動移除網址結尾多餘的斜線
+	  const base = API_BASE_URL.trim().replace(/\/+$/, '');
+	  return `${base}${endpoint}`;
+	}
 
     // =========================================================================
     // 手風琴折疊控制 (4.1 ~ 4.3 狀態持久化)
